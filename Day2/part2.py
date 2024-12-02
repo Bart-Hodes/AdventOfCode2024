@@ -1,58 +1,37 @@
-########################################################################
-###################### BROKEN CODE ####################################
-########################################################################
-
-
-f = open("input.txt", "r")
+def is_safe(levels):
+    # Check if all increasing or all decreasing
+    increasing = all(x < y for x, y in zip(levels, levels[1:]))
+    decreasing = all(x > y for x, y in zip(levels, levels[1:]))
     
-count = 0
-for idx, line in enumerate(f):
-    levels = line.strip("\n").split(" ")
-    print(levels)
+    # Check the difference between adjacent levels
+    diffs = [abs(x - y) for x, y in zip(levels, levels[1:])]
     
-    levels = [int(level) for level in levels]
-    levelsCopy = levels.copy()
-    
-    dampener = False
-    decreasingValid = True
-    
-    # Since our list can dynamically change, we need to use a while loop
-    i = 0
-    while i < len(levels) - 1:
-        if (levels[i] - levels[i + 1] >= 1) and (levels[i] - levels[i + 1] <= 3):
-            i += 1
-        elif not dampener:
-            if i == 0 and (levels[i+1] - levels[i + 2] >= 1 and levels[i+1] - levels[i + 2] <= 3):
-                levels.pop(i)
-            else:
-                levels.pop(i+1)
-            dampener = True
-        else:
-            decreasingValid = False
-            break
-    
-    levels = levelsCopy
-    increasingValid = True
-    dampener = False
-    
-    i = 0
-    while i < len(levels) - 1:
-        if (levels[i + 1] - levels[i] >= 1) and (levels[i + 1] - levels[i] <= 3):
-            i += 1
-        elif not dampener:
-            if i == 0 and (levels[i+2] - levels[i + 1] >= 1 and levels[i+2] - levels[i + 1] <= 3):
-                levels.pop(i)
-            else:
-                levels.pop(i+1)
-            dampener = True
-        else:
-            increasingValid = False
-            break
-
-    if decreasingValid or increasingValid:
-        print(f"{idx+1} Valid sequence")
-        count += 1
-        print(count)
+    if increasing or decreasing:
+        return all(1 <= diff <= 3 for diff in diffs)
     else:
-        print(f"{idx+1} Invalid sequence")
-print(count)
+        return False
+
+def can_be_made_safe_by_removing_one_level(levels):
+    n = len(levels)
+    for i in range(n):
+        # Remove the i-th level
+        new_levels = levels[:i] + levels[i+1:]
+        if is_safe(new_levels):
+            return True
+    return False
+
+
+with open("input.txt", "r") as f:
+    reports = []
+    for line in f:
+        report = list(map(int, line.strip().split()))
+        reports.append(report)
+
+# Count safe reports
+safe_count = 0
+
+for report in reports:
+    if is_safe(report) or can_be_made_safe_by_removing_one_level(report):
+        safe_count += 1
+
+print(f"Number of safe reports with the Problem Dampener: {safe_count}")

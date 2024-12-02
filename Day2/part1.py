@@ -1,22 +1,28 @@
-f = open("input.txt", "r")
-
-count = 0
-for line in f:
-    levels = line.strip("\n").split(" ")
-
-    levels = [int(level) for level in levels]
-
-    previousLevel = levels[0]
+def is_safe(levels):
+    # Check if all increasing or all decreasing
+    increasing = all(x < y for x, y in zip(levels, levels[1:]))
+    decreasing = all(x > y for x, y in zip(levels, levels[1:]))
     
-    decreasingValid = all(
-            (levels[i] - levels[i + 1] >= 1) and (levels[i] - levels[i + 1] <= 3)
-            for i in range(len(levels) - 1)
-        )
-    increasingValid = all(
-        (levels[i + 1] - levels[i] >= 1) and (levels[i + 1] - levels[i] <= 3)
-        for i in range(len(levels) - 1)
-    )
+    # Check the difference between adjacent levels
+    diffs = [abs(x - y) for x, y in zip(levels, levels[1:])]
     
-    if decreasingValid or increasingValid:
-        count += 1
-print(count)
+    if increasing or decreasing:
+        return all(1 <= diff <= 3 for diff in diffs)
+    else:
+        return False
+
+
+with open("input.txt", "r") as f:
+    reports = []
+    for line in f:
+        report = list(map(int, line.strip().split()))
+        reports.append(report)
+        
+# Count safe reports
+safe_count = 0
+
+for report in reports:
+    if is_safe(report):
+        safe_count += 1
+
+print(f"Number of safe reports: {safe_count}")
