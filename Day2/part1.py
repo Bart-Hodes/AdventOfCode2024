@@ -2,10 +2,10 @@ def is_safe(levels):
     # Check if all increasing or all decreasing
     increasing = all(x < y for x, y in zip(levels, levels[1:]))
     decreasing = all(x > y for x, y in zip(levels, levels[1:]))
-    
+
     # Check the difference between adjacent levels
     diffs = [abs(x - y) for x, y in zip(levels, levels[1:])]
-    
+
     if increasing or decreasing:
         return all(1 <= diff <= 3 for diff in diffs)
     else:
@@ -17,7 +17,7 @@ with open("input.txt", "r") as f:
     for line in f:
         report = list(map(int, line.strip().split()))
         reports.append(report)
-        
+
 # Count safe reports
 safe_count = 0
 
