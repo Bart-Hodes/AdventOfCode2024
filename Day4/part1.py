@@ -16,9 +16,8 @@ def checkDir(input, x, y, d):
 
         if x < 0 or y < 0 or x >= len(input[0]) or y >= len(input):
             return False
-        if input[y][x] == letter:
-            continue
-        return False
+        if input[y][x] != letter:
+            return False
     return True
 
 
