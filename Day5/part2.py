@@ -1,16 +1,22 @@
+# I dont like the way this works, but it works
+
 def is_valid_update(update, rules):
-    orderUpdate = False
-    for x, y in rules:
-        # If both pages x and y are in the update, ensure x comes before y
-        if x in update and y in update:
-            if update.index(x) > update.index(y):
-                orderUpdate = True
-                # Swap numbers
-                update[update.index(x)], update[update.index(y)] = (
-                    update[update.index(y)],
-                    update[update.index(x)],
-                )
-    return orderUpdate
+    valid = False
+    swap = False
+    while not valid:
+        valid = True
+        for x, y in rules:
+            # If both pages x and y are in the update, ensure x comes before y
+            if x in update and y in update:
+                if update.index(x) > update.index(y):
+                    valid = False
+                    swap = True
+                    # Swap numbers
+                    update[update.index(x)], update[update.index(y)] = (
+                        update[update.index(y)],
+                        update[update.index(x)],
+                    )
+    return swap
 
 
 with open("input.txt", "r") as f:
