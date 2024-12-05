@@ -21,11 +21,6 @@ with open("input.txt", "r") as f:
     for line in f:
         input.append(line.strip("\n"))
 
-
-# Search for X
-# Search around X for M
-# Keep looking in that direction for A and S
-
 count = 0
 for y, line in enumerate(input):
     for x, char in enumerate(line):
