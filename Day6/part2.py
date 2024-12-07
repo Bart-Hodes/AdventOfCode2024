@@ -37,6 +37,7 @@ def loopDetector(obstacleList, pos, direction):
         else:
             pos = nextStep
             visited.add((pos, direction))
+    # debugPrint(input, pos, [x[0] for x in visited])
     return False
 
 
@@ -97,6 +98,7 @@ pos = start
 guardPath = findGuardPath(input, pos, direction)
 
 count = 0
+previousPos = pos
 # iterativly search the guards path for loops
 for newObstacle in guardPath:
     obstacleListAppended = obstacleList.copy()
@@ -104,4 +106,6 @@ for newObstacle in guardPath:
 
     if loopDetector(obstacleListAppended, pos, direction):
         count += 1
+    previousPos = newObstacle
+
 print(count)
